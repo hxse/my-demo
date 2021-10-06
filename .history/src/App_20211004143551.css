@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+.content{
+}
+.footer{
+  flex:1;
+}
