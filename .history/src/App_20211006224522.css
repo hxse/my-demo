@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+  /* background-color: #f9f7f1; */
+}
+.container {
+  /* min-height: 100vh ; */
+  display: flex;
+  flex-direction: column;
+}
+.file {
+  display: flex;
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+}
+input {
+  display: none;
+}
+button{
+  width:calc(100vw/9);
+  height: 12vh;
+}
+#content1{
+  min-height:10vh;
+}
+
+.hr-twill-colorful {
+    border: 0;
+    padding: 3px;
+    background: linear-gradient(135deg, red, orange,green, blue, purple);
+    background: linear-gradient(135deg, black,grey,white);
+    --mask-image: repeating-linear-gradient(135deg, #000 0px, #000 1px, transparent 1px, transparent 6px);
+    -webkit-mask-image: var(--mask-image);
+    mask-image: var(--mask-image);
+}

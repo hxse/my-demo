@@ -1,0 +1,31 @@
+.App {
+  text-align: center;
+  /* background-color: #f9f7f1; */
+}
+.container {
+  /* min-height: 100vh ; */
+  display: flex;
+  flex-direction: column;
+}
+.file {
+  display: flex;
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+}
+input {
+  display: none;
+}
+button{
+  width:calc(100vw/9);
+  height: 12vh;
+}
+#content1{
+  height:100vh;
+}
+#content2{
+  height: 12vh;
+
+}

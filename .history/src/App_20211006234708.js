@@ -44,22 +44,32 @@ setInterval(() => {
   }
 }, 100);
 
+function addMutationObserver() {
+  // for (let id of ["#content1", "#content2"]) {
+  //   let observer = new MutationObserver(function (mutations, observer) {
+  //     mutations.forEach(function (mutation) {
+  //       console.log('监听:',mutation,observer,);
+  //     });
+  //   });
+  //   let article = document.querySelector(id);
+  //   let options = {
+  //     childList: true,
+  //     characterData: true,
+  //   };
+  //   observer.observe(article, options);
+  // }
+}
+
 function mountDict(text) {
   let content1 = document.querySelector("#content1");
-  // content1.textContent=text
-  // let textArr = text.split(' ')
+  content1.textContent=text
+  let textArr = text.split(' ')
   // for (let word of textArr) {
   //   let wordSpan = <span>{word}</span>
   //   content1.appendChild(wordSpan)
   // }
 }
 function App() {
-  let [word, setWord] = React.useState();
-  function mouseEnterEvent(event, text) {
-    console.log(event, text);
-    setWord(event.i.trimEnd(' ',',','.'));
-  }
-
   let [key, setKey] = React.useState();
   document.addEventListener("keydown", (e) => {
     // console.log("按下按键", e);
@@ -114,6 +124,7 @@ function App() {
   }
   useEffect(() => {
     getData();
+    addMutationObserver();
     console.log("初始化运行");
   }, []);
 
@@ -166,7 +177,7 @@ function App() {
       let _row2 = way ? row2 + 1 : row2 - 1;
       setRow2(_row2);
       setData2(file2[_row2]);
-      mountDict(file2[_row2]);
+      mountDict(file2[_row2])
       if (_row2 >= file2.length) {
         return "over";
       }
@@ -226,21 +237,15 @@ function App() {
           <hr className="hr-edge-weak" />
         </div>
         <div id="reader" className="content">
-          <div id="content1">
-            {data2
-              ? data2.split(" ").map((i) => (
-                  <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>
-                    {i}{" "}
-                  </span>
-                ))
-              : undefined}
+          <div id="content1" >
+            { data2.split(' ').forEach}
             {hr}
           </div>
-          <div id="content2">
+          <div id="content2" >
             {data}
             {hr}
           </div>
-          <div id="translate">{word}</div>
+          <div id="translate">It is a dict.</div>
         </div>
         <div className="footer">
           <button id="up" onClick={pageTurn.bind(this, 0, 0)}>

@@ -53,13 +53,11 @@ function mountDict(text) {
   //   content1.appendChild(wordSpan)
   // }
 }
-function App() {
-  let [word, setWord] = React.useState();
-  function mouseEnterEvent(event, text) {
-    console.log(event, text);
-    setWord(event.i.trimEnd(' ',',','.'));
-  }
+function touchEvent(event) {
+  console.log(event)
 
+}
+function App() {
   let [key, setKey] = React.useState();
   document.addEventListener("keydown", (e) => {
     // console.log("按下按键", e);
@@ -114,6 +112,7 @@ function App() {
   }
   useEffect(() => {
     getData();
+    addMutationObserver();
     console.log("初始化运行");
   }, []);
 
@@ -166,7 +165,7 @@ function App() {
       let _row2 = way ? row2 + 1 : row2 - 1;
       setRow2(_row2);
       setData2(file2[_row2]);
-      mountDict(file2[_row2]);
+      mountDict(file2[_row2])
       if (_row2 >= file2.length) {
         return "over";
       }
@@ -227,20 +226,14 @@ function App() {
         </div>
         <div id="reader" className="content">
           <div id="content1">
-            {data2
-              ? data2.split(" ").map((i) => (
-                  <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>
-                    {i}{" "}
-                  </span>
-                ))
-              : undefined}
+            {data2 ? data2.split(" ").map((i) => <span ontouchstart="touchEvent">{i} </span>) : undefined}
             {hr}
           </div>
           <div id="content2">
             {data}
             {hr}
           </div>
-          <div id="translate">{word}</div>
+          <div id="translate">It is a dict.</div>
         </div>
         <div className="footer">
           <button id="up" onClick={pageTurn.bind(this, 0, 0)}>

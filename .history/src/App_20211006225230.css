@@ -20,18 +20,10 @@ input {
 }
 button{
   width:calc(100vw/9);
-  height: 3rem;
+  height: 12vh;
 }
 #content1{
   min-height:20vh;
-  font-size: 1.9rem;
-}
-#content2{
-  min-height:20vh;
-  font-size: 1.9rem;
-}
-#translate{
-  font-size: 1.9rem;
 }
 .hr-twill {
     border: 0;

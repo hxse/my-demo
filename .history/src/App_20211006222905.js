@@ -15,57 +15,42 @@ window.addEventListener("gamepadconnected", function (e) {
   gamepadIndex = e.gamepad.index;
 });
 
-let buttons = [false, false, false, false, false, false];
-setInterval(() => {
-  if (gamepadIndex !== undefined) {
-    const myGamepad = navigator.getGamepads()[gamepadIndex];
-    myGamepad.buttons.forEach((item, buttonIndex) => {
-      let keyBinds = [
-        [0, "#up"], //A
-        [1, "#down"], //B
-        [2, "#up2"], //X
-        [3, "#down2"], //Y
-        [4, "#upAll"], //R
-        [5, "#downAll"], //L
-      ];
-      for (let [idx, id] of keyBinds) {
-        if (buttonIndex == idx) {
-          if (item.pressed) {
-            if (buttons[idx] == false) {
-              document.querySelector(id).click();
-            }
-            buttons[idx] = true;
-          } else {
-            buttons[idx] = false;
-          }
-        }
-      }
-    });
-  }
-}, 100);
-
-function mountDict(text) {
-  let content1 = document.querySelector("#content1");
-  // content1.textContent=text
-  // let textArr = text.split(' ')
-  // for (let word of textArr) {
-  //   let wordSpan = <span>{word}</span>
-  //   content1.appendChild(wordSpan)
-  // }
-}
+let buttons = [false,false,false,false,false,false];
+ setInterval(() => {
+   if (gamepadIndex !== undefined) {
+     const myGamepad = navigator.getGamepads()[gamepadIndex];
+     myGamepad.buttons.forEach((item, buttonIndex) => {
+       let keyBinds = [
+         [0, "#up"],//A
+         [1, "#down"],//B
+         [2, "#up2"],//X
+         [3, "#down2"],//Y
+         [4, '#upAll'],//R
+         [5,'#downAll']//L
+       ];
+       for (let [idx, id] of keyBinds) {
+         if (buttonIndex == idx) {
+           if (item.pressed) {
+             if (buttons[idx] == false) {
+               document.querySelector(id).click();
+             }
+             buttons[idx] = true;
+           } else {
+             buttons[idx] = false;
+           }
+         }
+       }
+     });
+   }
+ }, 100);
 function App() {
-  let [word, setWord] = React.useState();
-  function mouseEnterEvent(event, text) {
-    console.log(event, text);
-    setWord(event.i.trimEnd(' ',',','.'));
-  }
-
   let [key, setKey] = React.useState();
   document.addEventListener("keydown", (e) => {
     // console.log("按下按键", e);
   });
 
   // let [button, setButton] = React.useState();
+
 
   let [file, setFile] = React.useState("请输入文件");
   let [file2, setFile2] = React.useState("请输入文件");
@@ -105,7 +90,6 @@ function App() {
           setFile2(result);
           setRow2((i) => {
             setData2(result[i]);
-            mountDict(result[i]);
             return i;
           });
           break;
@@ -114,7 +98,6 @@ function App() {
   }
   useEffect(() => {
     getData();
-    console.log("初始化运行");
   }, []);
 
   function fileChange(v, event) {
@@ -125,9 +108,11 @@ function App() {
       switch (v) {
         case 0:
           setFile(text);
+          // setData(text[0]);
           break;
         case 1:
           setFile2(text);
+          // setData2(text[0]);
           break;
       }
     };
@@ -166,7 +151,6 @@ function App() {
       let _row2 = way ? row2 + 1 : row2 - 1;
       setRow2(_row2);
       setData2(file2[_row2]);
-      mountDict(file2[_row2]);
       if (_row2 >= file2.length) {
         return "over";
       }
@@ -213,7 +197,6 @@ function App() {
         break;
     }
   }
-  let hr = <hr className="hr-twill" />;
   return (
     <div className="App">
       <Div100vh className="container">
@@ -223,24 +206,10 @@ function App() {
         </div>
         <div>
           第{chapter}章, {row}行, {row2}行, {history ? history[1][0][0][1] : undefined}
-          <hr className="hr-edge-weak" />
         </div>
         <div id="reader" className="content">
-          <div id="content1">
-            {data2
-              ? data2.split(" ").map((i) => (
-                  <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>
-                    {i}{" "}
-                  </span>
-                ))
-              : undefined}
-            {hr}
-          </div>
-          <div id="content2">
-            {data}
-            {hr}
-          </div>
-          <div id="translate">{word}</div>
+          <div id="english">{data}</div>
+          <div id="chinese">{data2}</div>
         </div>
         <div className="footer">
           <button id="up" onClick={pageTurn.bind(this, 0, 0)}>

@@ -20,7 +20,7 @@ input {
 }
 button{
   width:calc(100vw/9);
-  height: 3rem;
+  height: 12vh;
 }
 #content1{
   min-height:20vh;

@@ -55,9 +55,9 @@ function mountDict(text) {
 }
 function App() {
   let [word, setWord] = React.useState();
-  function mouseEnterEvent(event, text) {
+  function touchEvent(event, text) {
     console.log(event, text);
-    setWord(event.i.trimEnd(' ',',','.'));
+    setWord(text);
   }
 
   let [key, setKey] = React.useState();
@@ -229,7 +229,7 @@ function App() {
           <div id="content1">
             {data2
               ? data2.split(" ").map((i) => (
-                  <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>
+                  <span onMouseEnter={touchEvent.bind(this, { i })} onTouchStart={touchEvent.bind(this, { i })}>
                     {i}{" "}
                   </span>
                 ))
@@ -240,7 +240,7 @@ function App() {
             {data}
             {hr}
           </div>
-          <div id="translate">{word}</div>
+          <div id="translate"></div>
         </div>
         <div className="footer">
           <button id="up" onClick={pageTurn.bind(this, 0, 0)}>

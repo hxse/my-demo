@@ -53,13 +53,11 @@ function mountDict(text) {
   //   content1.appendChild(wordSpan)
   // }
 }
-function App() {
-  let [word, setWord] = React.useState();
-  function mouseEnterEvent(event, text) {
-    console.log(event, text);
-    setWord(event.i.trimEnd(' ',',','.'));
-  }
+function touchEvent(event,text) {
+  console.log(event,text)
 
+}
+function App() {
   let [key, setKey] = React.useState();
   document.addEventListener("keydown", (e) => {
     // console.log("按下按键", e);
@@ -166,7 +164,7 @@ function App() {
       let _row2 = way ? row2 + 1 : row2 - 1;
       setRow2(_row2);
       setData2(file2[_row2]);
-      mountDict(file2[_row2]);
+      mountDict(file2[_row2])
       if (_row2 >= file2.length) {
         return "over";
       }
@@ -229,7 +227,7 @@ function App() {
           <div id="content1">
             {data2
               ? data2.split(" ").map((i) => (
-                  <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>
+                  <span onHover={touchEvent.bind(this, { i })} onTouchStart={touchEvent.bind(this, { i })}>
                     {i}{" "}
                   </span>
                 ))
@@ -240,7 +238,7 @@ function App() {
             {data}
             {hr}
           </div>
-          <div id="translate">{word}</div>
+          <div id="translate">It is a dict.</div>
         </div>
         <div className="footer">
           <button id="up" onClick={pageTurn.bind(this, 0, 0)}>
