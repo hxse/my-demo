@@ -1,57 +1,8 @@
-import React, { useEffect } from "react";
+import React, {  useEffect } from "react";
 import "./App.css";
 import Div100vh from "react-div-100vh";
 
-let gamepadIndex;
-window.addEventListener("gamepadconnected", function (e) {
-  let gp = navigator.getGamepads()[e.gamepad.index];
-  console.log(
-    "Gamepad connected at index %d: %s. %d buttons, %d axes.",
-    gp.index,
-    gp.id,
-    gp.buttons.length,
-    gp.axes.length
-  );
-  gamepadIndex = e.gamepad.index;
-});
-
-let buttons = [false,false,false,false,false,false];
- setInterval(() => {
-   if (gamepadIndex !== undefined) {
-     const myGamepad = navigator.getGamepads()[gamepadIndex];
-     myGamepad.buttons.forEach((item, buttonIndex) => {
-       let keyBinds = [
-         [0, "#up"],//A
-         [1, "#down"],//B
-         [2, "#up2"],//X
-         [3, "#down2"],//Y
-         [4, '#upAll'],//R
-         [5,'#downAll']//L
-       ];
-       for (let [idx, id] of keyBinds) {
-         if (buttonIndex == idx) {
-           if (item.pressed) {
-             if (buttons[idx] == false) {
-               document.querySelector(id).click();
-             }
-             buttons[idx] = true;
-           } else {
-             buttons[idx] = false;
-           }
-         }
-       }
-     });
-   }
- }, 100);
 function App() {
-  let [key, setKey] = React.useState();
-  document.addEventListener("keydown", (e) => {
-    // console.log("按下按键", e);
-  });
-
-  // let [button, setButton] = React.useState();
-
-
   let [file, setFile] = React.useState("请输入文件");
   let [file2, setFile2] = React.useState("请输入文件");
   // let [color, setColor] = React.useState('');
@@ -64,20 +15,23 @@ function App() {
   let [data, setData] = React.useState();
   let [data2, setData2] = React.useState();
 
+
   async function getData() {
     let result = await fetch("http://127.0.0.1:8000/config/get/ATG");
     result = await result.json();
-    // console.log(result);
+    console.log(result);
     setConfig(result);
     setChapter(result.currentChapters);
     setRow(Math.max(...result.currentRow[0]));
     setRow2(Math.max(...result.currentRow[1]));
     setHistory(result.history);
+    console.log(result.currentRow, 234234);
 
     let num = result.currentChapters;
     for (let language of ["chinese", "english"]) {
       result = await fetch(`http://127.0.0.1:8000/ATG/${language}/${num}`);
       result = await result.json();
+      console.log(result);
       switch (language) {
         case "chinese":
           setFile(result);
@@ -120,13 +74,14 @@ function App() {
   }
   function pageTurn(name, way, event) {
     let currentRow = [[row], [row2]];
-    async function updateData(i, refresh) {
+    async function updateData(i,refresh) {
       let data = JSON.stringify(i);
       let api = `http://127.0.0.1:8000/config/update/ATG?config=${data}`;
       let result = await fetch(api);
       result = await result.json();
+      console.log(1234, result, data);
       if (refresh) {
-        getData();
+         getData();
       }
     }
 
@@ -138,7 +93,7 @@ function App() {
         return "over";
       }
       if (_row < 0) {
-        return "pass";
+        return 'pass'
       }
       currentRow[0] = [_row];
       setConfig((i) => {
@@ -152,32 +107,36 @@ function App() {
       setRow2(_row2);
       setData2(file2[_row2]);
       if (_row2 >= file2.length) {
-        return "over";
+        return 'over'
       }
       if (_row2 < 0) {
         return "pass";
       }
       currentRow[1] = [_row2];
+      console.log(currentRow, _row2, row2, "hhhhh");
       setConfig((i2) => {
         i2 = { ...i2, currentRow: currentRow };
+        console.log(i2, currentRow, "6666");
         updateData(i2);
         return i2;
       });
+
     }
     function chapter(mode) {
       setConfig((i) => {
-        let currentChapters = mode == "up" ? i.currentChapters - 1 : i.currentChapters + 1;
+        let currentChapters=mode=='up'?i.currentChapters - 1:i.currentChapters +1
         i = { ...i, currentChapters: currentChapters, currentRow: [[0], [0]] };
-        updateData(i, true);
+        updateData(i,true);
         return i;
       });
+
     }
     switch (name) {
       case "all":
-        let res0 = item0();
+        let res0=item0();
         let res1 = item1();
-        if (res0 == "pass" && res1 == "pass") {
-          chapter("up");
+        if (res0 == 'pass' && res1 == 'pass') {
+           chapter("up");
         }
         if (res0 == "over" && res1 == "over") {
           chapter("down");
@@ -209,7 +168,7 @@ function App() {
         </div>
         <div id="reader" className="content">
           <div>{data}</div>
-          <br></br>
+          <br>
           <div>{data2}</div>
         </div>
         <div className="footer">

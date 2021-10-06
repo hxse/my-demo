@@ -15,28 +15,25 @@ window.addEventListener("gamepadconnected", function (e) {
   gamepadIndex = e.gamepad.index;
 });
 
-let buttons = [false,false,false,false,false,false];
+let button = true;
  setInterval(() => {
    if (gamepadIndex !== undefined) {
      const myGamepad = navigator.getGamepads()[gamepadIndex];
      myGamepad.buttons.forEach((item, buttonIndex) => {
        let keyBinds = [
-         [0, "#up"],//A
-         [1, "#down"],//B
-         [2, "#up2"],//X
-         [3, "#down2"],//Y
-         [4, '#upAll'],//R
-         [5,'#downAll']//L
+         [1, "#down"],
+         [0, "#up"],
        ];
        for (let [idx, id] of keyBinds) {
          if (buttonIndex == idx) {
            if (item.pressed) {
-             if (buttons[idx] == false) {
+             console.log(button);
+             if (button === false) {
                document.querySelector(id).click();
              }
-             buttons[idx] = true;
+             button = true;
            } else {
-             buttons[idx] = false;
+             button = false;
            }
          }
        }
@@ -46,7 +43,7 @@ let buttons = [false,false,false,false,false,false];
 function App() {
   let [key, setKey] = React.useState();
   document.addEventListener("keydown", (e) => {
-    // console.log("按下按键", e);
+    console.log("按下按键", e);
   });
 
   // let [button, setButton] = React.useState();
@@ -67,17 +64,19 @@ function App() {
   async function getData() {
     let result = await fetch("http://127.0.0.1:8000/config/get/ATG");
     result = await result.json();
-    // console.log(result);
+    console.log(result);
     setConfig(result);
     setChapter(result.currentChapters);
     setRow(Math.max(...result.currentRow[0]));
     setRow2(Math.max(...result.currentRow[1]));
     setHistory(result.history);
+    console.log(result.currentRow, 234234);
 
     let num = result.currentChapters;
     for (let language of ["chinese", "english"]) {
       result = await fetch(`http://127.0.0.1:8000/ATG/${language}/${num}`);
       result = await result.json();
+      console.log(result);
       switch (language) {
         case "chinese":
           setFile(result);
@@ -125,6 +124,7 @@ function App() {
       let api = `http://127.0.0.1:8000/config/update/ATG?config=${data}`;
       let result = await fetch(api);
       result = await result.json();
+      console.log(1234, result, data);
       if (refresh) {
         getData();
       }
@@ -158,8 +158,10 @@ function App() {
         return "pass";
       }
       currentRow[1] = [_row2];
+      console.log(currentRow, _row2, row2, "hhhhh");
       setConfig((i2) => {
         i2 = { ...i2, currentRow: currentRow };
+        console.log(i2, currentRow, "6666");
         updateData(i2);
         return i2;
       });

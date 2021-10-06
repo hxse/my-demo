@@ -15,28 +15,25 @@ window.addEventListener("gamepadconnected", function (e) {
   gamepadIndex = e.gamepad.index;
 });
 
-let buttons = [false,false,false,false,false,false];
+let button = true;
  setInterval(() => {
    if (gamepadIndex !== undefined) {
      const myGamepad = navigator.getGamepads()[gamepadIndex];
      myGamepad.buttons.forEach((item, buttonIndex) => {
        let keyBinds = [
-         [0, "#up"],//A
-         [1, "#down"],//B
-         [2, "#up2"],//X
-         [3, "#down2"],//Y
-         [4, '#upAll'],//R
-         [5,'#downAll']//L
+         [1, "#down"],
+         [0, "#up"],
        ];
        for (let [idx, id] of keyBinds) {
          if (buttonIndex == idx) {
+             console.log(button);
            if (item.pressed) {
-             if (buttons[idx] == false) {
+             if (button == false) {
                document.querySelector(id).click();
              }
-             buttons[idx] = true;
+             button = true;
            } else {
-             buttons[idx] = false;
+             button = false;
            }
          }
        }

@@ -21,12 +21,10 @@ let buttons = [false,false,false,false,false,false];
      const myGamepad = navigator.getGamepads()[gamepadIndex];
      myGamepad.buttons.forEach((item, buttonIndex) => {
        let keyBinds = [
-         [0, "#up"],//A
-         [1, "#down"],//B
-         [2, "#up2"],//X
-         [3, "#down2"],//Y
-         [4, '#upAll'],//R
-         [5,'#downAll']//L
+         [0, "#up"],
+         [1, "#down"],
+         [2, "#up2"],
+         [3, "#down2"],
        ];
        for (let [idx, id] of keyBinds) {
          if (buttonIndex == idx) {

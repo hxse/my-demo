@@ -25,8 +25,8 @@ let buttons = [false,false,false,false,false,false];
          [1, "#down"],//B
          [2, "#up2"],//X
          [3, "#down2"],//Y
-         [4, '#upAll'],//R
-         [5,'#downAll']//L
+         [4, '#upAll'],
+         [5,'#downAll']
        ];
        for (let [idx, id] of keyBinds) {
          if (buttonIndex == idx) {
