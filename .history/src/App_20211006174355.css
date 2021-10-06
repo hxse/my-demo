@@ -19,6 +19,6 @@ input {
   display: none;
 }
 button{
-  width:calc(100vw/9);
-  height: 12vh;
+  width:calc(100vw/8-1);
+  height: 10vh;
 }
