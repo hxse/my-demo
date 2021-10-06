@@ -3,7 +3,7 @@
   /* background-color: #f9f7f1; */
 }
 .container {
-  /* min-height: 100vh ; */
+  min-height: 100vh ;
   display: flex;
   flex-direction: column;
 }
@@ -17,8 +17,4 @@
 }
 input {
   display: none;
-}
-button{
-  width:20vh;
-  height: 10vh;
 }

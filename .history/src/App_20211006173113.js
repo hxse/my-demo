@@ -158,7 +158,7 @@ function App() {
   }
   return (
     <div className="App">
-      <Div100vh className="container">
+      <div className="container">
         <div className="file">
           <input type="file" id="input" onChange={fileChange.bind(this, 0)} />
           <input type="file" id="input2" onChange={fileChange.bind(this, 1)} />
@@ -196,7 +196,7 @@ function App() {
             下章
           </button>
         </div>
-      </Div100vh>
+      </div>
     </div>
   );
 }
