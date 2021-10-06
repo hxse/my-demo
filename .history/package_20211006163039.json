@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "push":"./push.bat",
-    "ghpage": "gh-pages --repo https://hxse:%hxse_github_token%@github.com/hxse/my-demo.git -d build"
+    "deploy": "gh-pages --repo https://hxse:%hxse_github_token%@github.com/hxse/my-demo.git -d build"
   },
   "homepage": "./",
   "eslintConfig": {
