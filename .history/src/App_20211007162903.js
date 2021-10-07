@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { use100vh } from "react-div-100vh";
+import Div100vh from "react-div-100vh";
 
 let gamepadIndex;
 window.addEventListener("gamepadconnected", function (e) {
@@ -153,7 +153,6 @@ function App() {
   }
   useEffect(() => {
     getData();
-    document.querySelector("div.container").height -= 1;
     console.log("初始化运行");
   }, []);
 
@@ -255,7 +254,7 @@ function App() {
   }
   return (
     <div className="App">
-      <div className="container" style={{height:use100vh()-1}}>
+      <Div100vh className="container">
         <div className="file">
           <input type="file" id="input" onChange={fileChange.bind(this, 0)} />
           <input type="file" id="input2" onChange={fileChange.bind(this, 1)} />
@@ -284,8 +283,8 @@ function App() {
             <div>{trans2str(translate2)}</div>
           </div>
           <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#translate", "up")} />
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#translate", "down")} />
+            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "up")} />
+            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "down")} />
           </div>
         </div>
         <div className="footer">
@@ -314,7 +313,7 @@ function App() {
             下章
           </button>
         </div>
-      </div>
+      </Div100vh>
     </div>
   );
 }

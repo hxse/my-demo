@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
+import Div100vh from "react-div-100vh";
 import { use100vh } from "react-div-100vh";
 
 let gamepadIndex;
@@ -255,7 +256,7 @@ function App() {
   }
   return (
     <div className="App">
-      <div className="container" style={{height:use100vh()-1}}>
+      <div className="container" style="{use100vh()-1}">
         <div className="file">
           <input type="file" id="input" onChange={fileChange.bind(this, 0)} />
           <input type="file" id="input2" onChange={fileChange.bind(this, 1)} />

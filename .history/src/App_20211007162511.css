@@ -17,22 +17,22 @@ input {
   display: none;
 }
 #content2, #content1 {
-  height:32.5vh;
+  height:42vh;
   font-size: 2.6rem;
-  /* line-height: 2.2rem; */
   overflow: auto;
   text-overflow:ellipsis;
+  background-color: red;
 }
 #translate {
   text-align: left;
-  height:15vh;
+  height:20vh;
   font-size: 2rem;
   overflow: auto;
   text-overflow:ellipsis;
 }
 button {
   width: calc(100vw / 10);
-  height: 5vh;
+  height: 15vh;
 }
 .hr-wrapper{
   display: flex;

@@ -32,7 +32,7 @@ input {
 }
 button {
   width: calc(100vw / 10);
-  height: 5vh;
+  height: 6vh;
 }
 .hr-wrapper{
   display: flex;

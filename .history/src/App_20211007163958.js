@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
+import Div100vh from "react-div-100vh";
 import { use100vh } from "react-div-100vh";
 
 let gamepadIndex;
