@@ -85,8 +85,8 @@ function App() {
     let contentDiv = document.querySelector(id);
     contentDiv.scrollTop =
       way == "down"
-        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.85
-        : contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
+        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.9
+        : contentDiv.scrollTop - contentDiv.clientHeight * 0.9;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
     let contentTop = contentDiv.getBoundingClientRect().top;
     let difBtm, difTop;
@@ -100,7 +100,7 @@ function App() {
         difBtm = contentBottom - spanBtm;
       }
     }
-    // console.log(difTop, difBtm);
+    console.log(difTop, difBtm);
     difBtm = difBtm ? difBtm : 0;
     difTop = difTop ? difTop : 0;
     contentDiv.scrollTop = way == "down" ? contentDiv.scrollTop + difTop : contentDiv.scrollTop - difBtm;

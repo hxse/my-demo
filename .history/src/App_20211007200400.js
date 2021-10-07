@@ -84,9 +84,7 @@ function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
     contentDiv.scrollTop =
-      way == "down"
-        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.85
-        : contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
+      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
     let contentTop = contentDiv.getBoundingClientRect().top;
     let difBtm, difTop;
@@ -94,24 +92,13 @@ function App() {
       let spanTop = span.getBoundingClientRect().top;
       let spanBtm = span.getBoundingClientRect().bottom;
       if (spanTop < contentTop && spanBtm > contentTop) {
-        difTop = spanTop - contentTop;
+        difTop = contentTop-spanBtm ;
       }
       if (spanTop < contentBottom && spanBtm > contentBottom) {
-        difBtm = contentBottom - spanBtm;
+        difBtm = spanTop - contentBottom;
       }
     }
-    // console.log(difTop, difBtm);
-    difBtm = difBtm ? difBtm : 0;
-    difTop = difTop ? difTop : 0;
-    contentDiv.scrollTop = way == "down" ? contentDiv.scrollTop + difTop : contentDiv.scrollTop - difBtm;
-    if (difTop && !difBtm) {
-      //末尾
-      contentDiv.scrollTop = way == "down" ? contentDiv.scrollHeight : contentDiv.scrollTop;
-    }
-    if (!difTop && difBtm) {
-      //开始
-      contentDiv.scrollTop = way == "up" ? 0 : contentDiv.scrollTop;
-    }
+    contentDiv.scrollTop = way == "down" ? contentDiv.scrollTop + difBtm : contentDiv.scrollTop + difTop;
   }
 
   let [translate, setTranslate] = React.useState();

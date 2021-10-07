@@ -2,23 +2,6 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { use100vh } from "react-div-100vh";
 
-const keyBinds = [
-  [0, "#content1HrDown"], //A
-  [1, "#content1HrUp"], //B
-  [2, "#content2HrDown"], //X
-  [3, "#content2HrUp"], //Y
-  [4, "#upAll"], //R
-  [5, "#downAll"], //L
-];
-
-const axesBinds = [
-  //不要动顺序,只能动id, 参考id "#translateHrDown" "#chapterDown"
-  [0, 1, "#down"], //right
-  [1, 1, "#down2"], //down
-  [0, -1, "#up"], //left
-  [1, -1, "#up2"], //up
-];
-
 let gamepadIndex;
 window.addEventListener("gamepadconnected", function (e) {
   let gp = navigator.getGamepads()[e.gamepad.index];
@@ -35,35 +18,50 @@ window.addEventListener("gamepadconnected", function (e) {
 let buttons = [false, false, false, false, false, false];
 let _axes = [false, false, false, false];
 let _axesLR;
-let bingji;
 setInterval(() => {
   if (gamepadIndex !== undefined) {
     const myGamepad = navigator.getGamepads()[gamepadIndex];
-    const pressNum = myGamepad.axes.filter((item) => item == 1 || item == -1).length;
 
-    if (pressNum == 1) {
-      myGamepad.axes.forEach((item, buttonIndex) => {
-        for (let [idx, value, id] of axesBinds) {
-          if (idx == buttonIndex && value == item) {
-            let _idx = item == -1 ? idx + 2 : idx;
-            if (_axes[_idx] == false) {
-              _axes[_idx] = true;
-              document.querySelector(id).click();
-            }
+    myGamepad.axes.forEach((item, buttonIndex) => {
+      let axesBinds = [
+        [0, 1, "#content1HrDown"], //right
+        [1, 1, "#content2HrDown"], //down
+        [0, -1, "#translateHrDown"], //left
+        [1, -1, "#chapterDown"], //up
+      ];
+
+      for (let [idx, value, id] of axesBinds) {
+        if (idx == buttonIndex && value == item) {
+          if (_axes[item == -1 ? idx + 2 : idx] == false) {
+            console.log("按下", id, idx, value);
+            console.log(_axes, _axesLR);
+            // document.querySelector(id).click();
+            _axes[item == -1 ? idx + 2 : idx] = true;
+            _axesLR = item;
           }
         }
-      });
-    }
-
-    if (pressNum == 0) {
-      if (_axes.filter((i) => i == true).length > 0) {
-        for (let i in _axes) {
-          _axes[i] = false;
+        if (idx == buttonIndex) {
+          if (item != 1 && item != -1) {
+            if (_axesLR != "忽略") {
+              console.log("释放", buttonIndex);
+              console.log(_axes, _axesLR);
+              _axes[_axesLR == -1 ? idx + 2 : idx] = false;
+            }
+            _axesLR = "忽略";
+          }
         }
       }
-    }
+    });
 
     myGamepad.buttons.forEach((item, buttonIndex) => {
+      let keyBinds = [
+        [0, "#up"], //A
+        [1, "#down"], //B
+        [2, "#up2"], //X
+        [3, "#down2"], //Y
+        [4, "#upAll"], //R
+        [5, "#downAll"], //L
+      ];
       for (let [idx, id] of keyBinds) {
         if (buttonIndex == idx) {
           if (item.pressed) {
@@ -80,37 +78,31 @@ setInterval(() => {
   }
 }, 100);
 
+function mountDict(text) {
+  let content1 = document.querySelector("#content1");
+  // content1.textContent=text
+  // let textArr = text.split(' ')
+  // for (let word of textArr) {
+  //   let wordSpan = <span>{word}</span>
+  //   content1.appendChild(wordSpan)
+  // }
+}
 function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
     contentDiv.scrollTop =
-      way == "down"
-        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.85
-        : contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
+      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    let contentTop = contentDiv.getBoundingClientRect().top;
-    let difBtm, difTop;
     for (let span of contentDiv.querySelectorAll("span")) {
       let spanTop = span.getBoundingClientRect().top;
       let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentTop && spanBtm > contentTop) {
-        difTop = spanTop - contentTop;
-      }
       if (spanTop < contentBottom && spanBtm > contentBottom) {
-        difBtm = contentBottom - spanBtm;
+        console.log(span);
+        contentDiv.scrollTop =
+          way == "down"
+            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
+            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
       }
-    }
-    // console.log(difTop, difBtm);
-    difBtm = difBtm ? difBtm : 0;
-    difTop = difTop ? difTop : 0;
-    contentDiv.scrollTop = way == "down" ? contentDiv.scrollTop + difTop : contentDiv.scrollTop - difBtm;
-    if (difTop && !difBtm) {
-      //末尾
-      contentDiv.scrollTop = way == "down" ? contentDiv.scrollHeight : contentDiv.scrollTop;
-    }
-    if (!difTop && difBtm) {
-      //开始
-      contentDiv.scrollTop = way == "up" ? 0 : contentDiv.scrollTop;
     }
   }
 
@@ -132,6 +124,7 @@ function App() {
       const json = await response.json();
       let data = json ? { word: json.word, phonetic: json.phonetic, translate: json.translation } : {};
       dataArr.push(data);
+      console.log(data);
     }
     if (dataArr[1].word == dataArr[0].word) {
       dataArr[1] = null;
@@ -162,6 +155,7 @@ function App() {
   async function getData() {
     let result = await fetch("http://127.0.0.1:8000/config/get/ATG");
     result = await result.json();
+    // console.log(result);
     setConfig(result);
     setChapter(result.currentChapters);
     setRow(Math.max(...result.currentRow[0]));
@@ -184,6 +178,7 @@ function App() {
           setFile2(result);
           setRow2((i) => {
             setData2(result[i]);
+            mountDict(result[i]);
             return i;
           });
           break;
@@ -245,6 +240,7 @@ function App() {
       let _row2 = way ? row2 + 1 : row2 - 1;
       setRow2(_row2);
       setData2(file2[_row2]);
+      mountDict(file2[_row2]);
       if (_row2 >= file2.length) {
         return "over";
       }

@@ -3,10 +3,10 @@ import "./App.css";
 import { use100vh } from "react-div-100vh";
 
 const keyBinds = [
-  [0, "#content1HrDown"], //A
-  [1, "#content1HrUp"], //B
-  [2, "#content2HrDown"], //X
-  [3, "#content2HrUp"], //Y
+  [0, "#content1HrUp"], //A
+  [1, "#content1HrDown"], //B
+  [2, "#content2HrUp"], //X
+  [3, "#content2HrDown"], //Y
   [4, "#upAll"], //R
   [5, "#downAll"], //L
 ];
@@ -14,9 +14,9 @@ const keyBinds = [
 const axesBinds = [
   //不要动顺序,只能动id, 参考id "#translateHrDown" "#chapterDown"
   [0, 1, "#down"], //right
-  [1, 1, "#down2"], //down
+  [1, 1, "down2"], //down
   [0, -1, "#up"], //left
-  [1, -1, "#up2"], //up
+  [1, -1, "up2"], //up
 ];
 
 let gamepadIndex;
@@ -84,33 +84,17 @@ function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
     contentDiv.scrollTop =
-      way == "down"
-        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.85
-        : contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
+      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    let contentTop = contentDiv.getBoundingClientRect().top;
-    let difBtm, difTop;
     for (let span of contentDiv.querySelectorAll("span")) {
       let spanTop = span.getBoundingClientRect().top;
       let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentTop && spanBtm > contentTop) {
-        difTop = spanTop - contentTop;
-      }
       if (spanTop < contentBottom && spanBtm > contentBottom) {
-        difBtm = contentBottom - spanBtm;
+        contentDiv.scrollTop =
+          way == "down"
+            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
+            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
       }
-    }
-    // console.log(difTop, difBtm);
-    difBtm = difBtm ? difBtm : 0;
-    difTop = difTop ? difTop : 0;
-    contentDiv.scrollTop = way == "down" ? contentDiv.scrollTop + difTop : contentDiv.scrollTop - difBtm;
-    if (difTop && !difBtm) {
-      //末尾
-      contentDiv.scrollTop = way == "down" ? contentDiv.scrollHeight : contentDiv.scrollTop;
-    }
-    if (!difTop && difBtm) {
-      //开始
-      contentDiv.scrollTop = way == "up" ? 0 : contentDiv.scrollTop;
     }
   }
 
