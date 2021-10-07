@@ -56,18 +56,18 @@ function mountDict(text) {
 function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
-    contentDiv.scrollTop =
-      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
+    contentDiv.scrollTop = way == 'down' ? (contentDiv.scrollTop + contentDiv.clientHeight) : (contentDiv.scrollTop - contentDiv.clientHeight);
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    for (let span of contentDiv.querySelectorAll("span")) {
+    for (let span of contentDiv.querySelectorAll('span')) {
       let spanTop = span.getBoundingClientRect().top;
       let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentBottom && spanBtm > contentBottom) {
-        console.log(span);
+      console.log(spanTop>contentBottom,spanBtm>contentBottom)
+      if (span.getBoundingClientRect().top > contentBottom && span.getBoundingClientRect().bottom < contentBottom) {
+        console.log(span, span.getBoundingClientRect().top, span.getBoundingClientRect().bottom, "btm", contentBottom);
         contentDiv.scrollTop =
           way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
+            ? contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom)
+            : contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom);
       }
     }
   }

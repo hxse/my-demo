@@ -54,49 +54,21 @@ function mountDict(text) {
   // }
 }
 function App() {
-  function contentPage(id, way) {
-    let contentDiv = document.querySelector(id);
-    contentDiv.scrollTop =
-      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
-    let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    for (let span of contentDiv.querySelectorAll("span")) {
-      let spanTop = span.getBoundingClientRect().top;
-      let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentBottom && spanBtm > contentBottom) {
-        console.log(span);
-        contentDiv.scrollTop =
-          way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
-      }
-    }
-  }
-
   let [translate, setTranslate] = React.useState();
   let [translate2, setTranslate2] = React.useState();
-  function trans2str(json) {
-    return json
-      ? Object.keys(json)
-          .map((i) => `${i}:${json[i]}`)
-          .join("\n")
-      : null;
-  }
   async function mouseEnterEvent(event, text) {
     let word = event.i.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()…]/g, "");
 
-    let dataArr = [];
-    for (let stem of [false, true]) {
+    for (let stem of [ false,true]) {
       const response = await fetch(`http://127.0.0.1:8000/dict/${word}?stem=${stem}`);
       const json = await response.json();
       let data = json ? { word: json.word, phonetic: json.phonetic, translate: json.translation } : {};
-      dataArr.push(data);
+      stem?setTranslate2(data):setTranslate(data)
       console.log(data);
     }
-    if (dataArr[1].word == dataArr[0].word) {
-      dataArr[1] = null;
-    }
-    setTranslate(dataArr[0]);
-    setTranslate2(dataArr[1]);
+    // console.log(event, text);
+
+    setTranslate(word);
   }
 
   let [key, setKey] = React.useState();
@@ -252,6 +224,7 @@ function App() {
         break;
     }
   }
+  let hr = <hr className="hr-twill" />;
   return (
     <div className="App">
       <Div100vh className="container">
@@ -269,19 +242,10 @@ function App() {
               ? data2.split(" ").map((i) => <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>{i} </span>)
               : undefined}
           </div>
-          <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "up")} />
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "down")} />
-          </div>
+          {hr}
           <div id="content2">{data}</div>
-          <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "up")} />
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "down")} />
-          </div>
-          <div id="translate">
-            <div>{trans2str(translate)}</div>
-            <div>{trans2str(translate2)}</div>
-          </div>
+          {hr}
+          <div id="translate">{translate}</div>
         </div>
         <div className="footer">
           <button id="up" onClick={pageTurn.bind(this, 0, 0)}>

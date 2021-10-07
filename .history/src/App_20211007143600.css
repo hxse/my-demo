@@ -36,10 +36,6 @@ button {
   overflow: auto;
   text-overflow:ellipsis;
 }
-.hr-wrapper{
-  display: flex;
-  flex-direction: row;
-}
 .hr-twill {
   width:50vw;
   border: 0;

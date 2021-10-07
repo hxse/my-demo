@@ -20,28 +20,22 @@ input {
 }
 button {
   width: calc(100vw / 9);
-  height: 2.5rem;
+  height: 3rem;
 }
 #content2, #content1 {
-  height:32.2vh;
-  font-size: 2.6rem;
-  /* line-height: 2.2rem; */
-  overflow: auto;
+  height:20rem;
+  font-size: 2.2rem;
+  overflow: hidden;
   text-overflow:ellipsis;
 }
 #translate {
-  text-align: left;
-  height:16vh;
-  font-size: 2rem;
-  overflow: auto;
+  /* height:10rem; */
+  font-size: 4rem;
+  overflow: hidden;
   text-overflow:ellipsis;
-}
-.hr-wrapper{
-  display: flex;
-  flex-direction: row;
+  font-size: 1.9rem;
 }
 .hr-twill {
-  width:50vw;
   border: 0;
   padding: 3px;
   background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 6px);

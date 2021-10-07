@@ -55,21 +55,7 @@ function mountDict(text) {
 }
 function App() {
   function contentPage(id, way) {
-    let contentDiv = document.querySelector(id);
-    contentDiv.scrollTop =
-      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
-    let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    for (let span of contentDiv.querySelectorAll("span")) {
-      let spanTop = span.getBoundingClientRect().top;
-      let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentBottom && spanBtm > contentBottom) {
-        console.log(span);
-        contentDiv.scrollTop =
-          way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
-      }
-    }
+    console.log(id)
   }
 
   let [translate, setTranslate] = React.useState();
@@ -252,6 +238,8 @@ function App() {
         break;
     }
   }
+  let hrUp = <hr className="hr-twill" onClick={contentPage.bind(this, "down")} />;
+  let hrDown = <hr className="hr-twill" onClick={contentPage.bind(this, "down")} />;
   return (
     <div className="App">
       <Div100vh className="container">
@@ -269,15 +257,9 @@ function App() {
               ? data2.split(" ").map((i) => <span onMouseEnter={mouseEnterEvent.bind(this, { i })}>{i} </span>)
               : undefined}
           </div>
-          <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "up")} />
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "down")} />
-          </div>
+          <hr className="hr-twill" onClick={contentPage.bind(this, 0,"down")} />
           <div id="content2">{data}</div>
-          <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "up")} />
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "down")} />
-          </div>
+          <hr className="hr-twill" onClick={contentPage.bind(this, 1,"down")} />
           <div id="translate">
             <div>{trans2str(translate)}</div>
             <div>{trans2str(translate2)}</div>

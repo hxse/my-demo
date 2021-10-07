@@ -55,21 +55,7 @@ function mountDict(text) {
 }
 function App() {
   function contentPage(id, way) {
-    let contentDiv = document.querySelector(id);
-    contentDiv.scrollTop =
-      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
-    let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    for (let span of contentDiv.querySelectorAll("span")) {
-      let spanTop = span.getBoundingClientRect().top;
-      let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentBottom && spanBtm > contentBottom) {
-        console.log(span);
-        contentDiv.scrollTop =
-          way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
-      }
-    }
+    document.querySelector(id).scrollTop += document.querySelector(id).clientHeight;
   }
 
   let [translate, setTranslate] = React.useState();
@@ -270,12 +256,12 @@ function App() {
               : undefined}
           </div>
           <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "up")} />
+            <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "down")} />
             <hr className="hr-twill" onClick={contentPage.bind(this, "#content1", "down")} />
           </div>
           <div id="content2">{data}</div>
           <div className="hr-wrapper">
-            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "up")} />
+            <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "down")} />
             <hr className="hr-twill" onClick={contentPage.bind(this, "#content2", "down")} />
           </div>
           <div id="translate">

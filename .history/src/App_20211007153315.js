@@ -62,13 +62,13 @@ function App() {
     for (let span of contentDiv.querySelectorAll("span")) {
       let spanTop = span.getBoundingClientRect().top;
       let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentBottom && spanBtm > contentBottom) {
-        console.log(span);
-        contentDiv.scrollTop =
-          way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
-      }
+      // if (spanTop < contentBottom && spanBtm > contentBottom) {
+      //   console.log(span);
+      //   contentDiv.scrollTop =
+      //     way == "down"
+      //       ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
+      //       : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
+      // }
     }
   }
 

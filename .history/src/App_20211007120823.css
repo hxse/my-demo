@@ -26,22 +26,17 @@ button {
   height:32.2vh;
   font-size: 2.6rem;
   /* line-height: 2.2rem; */
-  overflow: auto;
-  text-overflow:ellipsis;
+  overflow: hidden;
+  text-overflow:auto;
 }
 #translate {
   text-align: left;
   height:16vh;
   font-size: 2rem;
-  overflow: auto;
-  text-overflow:ellipsis;
-}
-.hr-wrapper{
-  display: flex;
-  flex-direction: row;
+  overflow: hidden;
+  text-overflow:auto;
 }
 .hr-twill {
-  width:50vw;
   border: 0;
   padding: 3px;
   background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 6px);

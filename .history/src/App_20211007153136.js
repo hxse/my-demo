@@ -66,8 +66,8 @@ function App() {
         console.log(span);
         contentDiv.scrollTop =
           way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
+            ? contentDiv.scrollTop - (span.getBoundingClientRect().top - contentBottom)
+            : contentDiv.scrollTop + (contentBottom - span.getBoundingClientRect().bottom);
       }
     }
   }

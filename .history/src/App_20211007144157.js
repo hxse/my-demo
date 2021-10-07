@@ -55,21 +55,8 @@ function mountDict(text) {
 }
 function App() {
   function contentPage(id, way) {
-    let contentDiv = document.querySelector(id);
-    contentDiv.scrollTop =
-      way == "down" ? contentDiv.scrollTop + contentDiv.clientHeight : contentDiv.scrollTop - contentDiv.clientHeight;
-    let contentBottom = contentDiv.getBoundingClientRect().bottom;
-    for (let span of contentDiv.querySelectorAll("span")) {
-      let spanTop = span.getBoundingClientRect().top;
-      let spanBtm = span.getBoundingClientRect().bottom;
-      if (spanTop < contentBottom && spanBtm > contentBottom) {
-        console.log(span);
-        contentDiv.scrollTop =
-          way == "down"
-            ? contentDiv.scrollTop + (span.getBoundingClientRect().top - contentBottom)
-            : contentDiv.scrollTop - (contentBottom - span.getBoundingClientRect().bottom);
-      }
-    }
+    let scroll = document.querySelector(id);
+    scroll.scrollTop = way=='down' ? (scroll.scrollTop += scroll.clientHeight) : (scroll.scrollTop -= scroll.clientHeight);
   }
 
   let [translate, setTranslate] = React.useState();
