@@ -83,9 +83,10 @@ setInterval(() => {
 function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
-    let downTop = contentDiv.scrollTop + contentDiv.clientHeight * 0.85;
-    let upTop = contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
-    contentDiv.scrollTop = way == "down" ? downTop : upTop;
+    contentDiv.scrollTop =
+      way == "down"
+        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.85
+        : contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
     let contentTop = contentDiv.getBoundingClientRect().top;
     let difBtm, difTop;
@@ -100,19 +101,31 @@ function App() {
       }
     }
 
+    console.log(difTop, difBtm, contentDiv.scrollHeight, contentDiv.scrollTop);
+    console.log("试试", contentDiv.scrollHeight - contentDiv.scrollTop, contentDiv.scrollTop,contentDiv.clientHeight);
+
     difBtm = difBtm ? difBtm : 0;
     difTop = difTop ? difTop : 0;
     if (way == "down") {
-      console.log("downTop", downTop, contentDiv.scrollHeight, contentDiv.scrollHeight - contentDiv.clientHeight);
-      if (downTop < contentDiv.scrollHeight - contentDiv.clientHeight) {
+      if (contentDiv.scrollHeight - contentDiv.scrollTop >= contentDiv.clientHeight) {
         contentDiv.scrollTop = contentDiv.scrollTop + difTop;
       }
     } else {
-      if (upTop > 0) {
+      if (contentDiv.scrollTop <= contentDiv.clientHeight) {
+
         contentDiv.scrollTop = contentDiv.scrollTop - difBtm;
       }
     }
 
+    // if (difTop && !difBtm) {
+    //   //末尾
+    //   contentDiv.scrollTop = way == "down" ? contentDiv.scrollHeight : contentDiv.scrollTop;
+    // }
+    // if (!difTop && difBtm) {
+    //   //开始
+    //   contentDiv.scrollTop = way == "up" ? 0 : contentDiv.scrollTop;
+    // }
+    // console.log(difTop, difBtm, contentDiv.scrollHeight, contentDiv.scrollTop);
   }
 
   let [translate, setTranslate] = React.useState();
@@ -302,7 +315,7 @@ function App() {
           <input type="file" id="input2" onChange={fileChange.bind(this, 1)} />
         </div>
         <div>
-          第{chapter}章, {row}行, {row2}行, {history ? history[1][0][0][1] : undefined},版本1.1
+          第{chapter}章, {row}行, {row2}行, {history ? history[1][0][0][1] : undefined},版本1.0
           <hr className="hr-edge-weak" />
         </div>
         <div id="reader" className="content">

@@ -83,9 +83,11 @@ setInterval(() => {
 function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
+    const spans = contentDiv.querySelectorAll("span");
     let downTop = contentDiv.scrollTop + contentDiv.clientHeight * 0.85;
     let upTop = contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
     contentDiv.scrollTop = way == "down" ? downTop : upTop;
+    console.log(upTop, contentDiv.clientHeight, downTop, contentDiv.scrollHeight);
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
     let contentTop = contentDiv.getBoundingClientRect().top;
     let difBtm, difTop;
@@ -100,6 +102,8 @@ function App() {
       }
     }
 
+    // console.log("试试", contentDiv.scrollHeight - contentDiv.scrollTop, contentDiv.scrollTop, contentDiv.clientHeight);
+
     difBtm = difBtm ? difBtm : 0;
     difTop = difTop ? difTop : 0;
     if (way == "down") {
@@ -113,6 +117,24 @@ function App() {
       }
     }
 
+    //   let spanEnd = spans[spans.length - 1];
+    //   let spanTop = spanEnd.getBoundingClientRect().top;
+    //   let spanBtm = spanEnd.getBoundingClientRect().bottom;
+    //   if (way == "down") {
+    //     if (spanTop < contentBottom && spanBtm > contentBottom) {
+    //       contentDiv.scrollTop = contentDiv.scrollHeight;
+    //     }
+    //   } else {
+    //     console.log(
+    //       "看看--",
+    //       "scrollTop",
+    //       contentDiv.scrollTop,
+    //       "scrollHeight",
+    //       contentDiv.scrollHeight,
+    //       "clientHeight",
+    //       contentDiv.clientHeight
+    //     );
+    //   }
   }
 
   let [translate, setTranslate] = React.useState();

@@ -83,9 +83,10 @@ setInterval(() => {
 function App() {
   function contentPage(id, way) {
     let contentDiv = document.querySelector(id);
-    let downTop = contentDiv.scrollTop + contentDiv.clientHeight * 0.85;
-    let upTop = contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
-    contentDiv.scrollTop = way == "down" ? downTop : upTop;
+    contentDiv.scrollTop =
+      way == "down"
+        ? contentDiv.scrollTop + contentDiv.clientHeight * 0.85
+        : contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
     let contentTop = contentDiv.getBoundingClientRect().top;
     let difBtm, difTop;
@@ -100,19 +101,20 @@ function App() {
       }
     }
 
+    console.log(difTop, difBtm, contentDiv.scrollHeight, contentDiv.scrollTop);
+    console.log("试试", contentDiv.scrollHeight - contentDiv.scrollTop, contentDiv.scrollTop, contentDiv.clientHeight);
+
     difBtm = difBtm ? difBtm : 0;
     difTop = difTop ? difTop : 0;
     if (way == "down") {
-      console.log("downTop", downTop, contentDiv.scrollHeight, contentDiv.scrollHeight - contentDiv.clientHeight);
-      if (downTop < contentDiv.scrollHeight - contentDiv.clientHeight) {
+      if (contentDiv.scrollHeight - contentDiv.scrollTop > contentDiv.clientHeight) {
         contentDiv.scrollTop = contentDiv.scrollTop + difTop;
       }
     } else {
-      if (upTop > 0) {
+      if (contentDiv.scrollTop > contentDiv.clientHeight) {
         contentDiv.scrollTop = contentDiv.scrollTop - difBtm;
       }
     }
-
   }
 
   let [translate, setTranslate] = React.useState();

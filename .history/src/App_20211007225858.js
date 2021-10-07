@@ -86,6 +86,7 @@ function App() {
     let downTop = contentDiv.scrollTop + contentDiv.clientHeight * 0.85;
     let upTop = contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
     contentDiv.scrollTop = way == "down" ? downTop : upTop;
+    console.log(upTop, contentDiv.clientHeight, downTop, contentDiv.scrollHeight);
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
     let contentTop = contentDiv.getBoundingClientRect().top;
     let difBtm, difTop;
