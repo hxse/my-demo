@@ -113,7 +113,7 @@ function App() {
       let spanTop = span.getBoundingClientRect().top;
       let spanBottom = span.getBoundingClientRect().bottom;
       if (spanTop < contentTop && spanBottom < contentTop) {
-        spanArr.push({ name: "up", data: span, idx: spanArr.length });
+        spanArr.push({ name: "up", data: span ,idx:spanArr.length});
       }
       if (spanTop < contentTop && spanBottom > contentTop) {
         spanArr.push({ name: "_up", data: span, idx: spanArr.length });
@@ -128,28 +128,22 @@ function App() {
         spanArr.push({ name: "down", data: span, idx: spanArr.length });
       }
 
-      const lapse = 1; //捕捉一下1像素误差
-      if (way == "down") {
-        if (spanArr[spanArr.length - 1].name == "_down") {
-          if (spanBottom - contentBottom < lapse) {
-            // console.log("捕捉误差", span, spanBottom, contentBottom);
-            spanArr[spanArr.length - 1].name = "content";
+      if (way == 'down') {
+        if (spanArr[spanArr.length - 1].name == '_down') {
+          if (spanBottom - contentBottom < 1) {
+            console.log("捕捉误差", spanBottom, contentBottom);
           }
         }
       }
     }
     // console.log(_spanUp, _spanDown, spanContentStart, spanContentEnd);
     // console.log(spanArr);
-    console.assert(
-      spanArr.length == contentDiv.querySelectorAll("span").length,
-      "error数量不对:",
-      [...contentDiv.querySelectorAll("span")].filter((i) => !spanArr.map((i) => i.data).includes(i))
-    );
+    console.assert(spanArr.length == contentDiv.querySelectorAll("span").length);
 
     cleanLine(id);
     let contentSpan = spanArr.filter((i) => i.name == "content");
     let contentRows = getRows(contentSpan);
-    // console.log(contentRows);
+    console.log(contentRows);
     let spanContentStartRow = contentRows[0];
     let spanContentEndRow = contentRows[contentRows.length - 1];
     let spanContentStart = spanContentStartRow[0];
@@ -157,15 +151,13 @@ function App() {
     if (way == "down") {
       contentDiv.scrollTop = contentDiv.scrollTop + (spanContentEnd.data.getBoundingClientRect().top - contentTop);
       spanContentEndRow.forEach((i) => {
-        //给保留一行添加下划线
         let span = i.data;
         span.style.textDecoration = "underline";
         span.style.textDecorationThickness = "0.02em";
         span.style.textDecorationStyle = "solid";
       });
     } else {
-      contentDiv.scrollTop =
-        contentDiv.scrollTop - (contentBottom - spanContentStart.data.getBoundingClientRect().bottom);
+      contentDiv.scrollTop = contentDiv.scrollTop - (contentBottom - spanContentStart.data.getBoundingClientRect().bottom);
       spanContentStartRow.forEach((i) => {
         let span = i.data;
         span.style.textDecoration = "underline";

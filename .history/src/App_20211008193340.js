@@ -105,6 +105,7 @@ function App() {
     }, []);
   }
   function contentPage(id, way) {
+    let lapse = 1; //尾行可能会有一像素的误差,所以用1而不是0
     let spanArr = [];
     let contentDiv = document.querySelector(id);
     let contentTop = contentDiv.getBoundingClientRect().top;
@@ -113,43 +114,35 @@ function App() {
       let spanTop = span.getBoundingClientRect().top;
       let spanBottom = span.getBoundingClientRect().bottom;
       if (spanTop < contentTop && spanBottom < contentTop) {
+        //上方
         spanArr.push({ name: "up", data: span, idx: spanArr.length });
       }
       if (spanTop < contentTop && spanBottom > contentTop) {
+        //上方临界
         spanArr.push({ name: "_up", data: span, idx: spanArr.length });
       }
-      if (spanTop >= contentTop && spanBottom <= contentBottom) {
+      if (spanTop >= contentTop && spanBottom - contentBottom < lapse) {
+        //正文
         spanArr.push({ name: "content", data: span, idx: spanArr.length });
+        console.log("正文", spanTop, spanBottom, contentBottom);
       }
-      if (spanTop < contentBottom && spanBottom > contentBottom) {
+      if (spanTop < contentBottom && spanBottom - contentBottom > lapse) {
+        //下方临界
         spanArr.push({ name: "_down", data: span, idx: spanArr.length });
+        console.log("下方临界", spanTop, spanBottom, contentBottom);
       }
       if (spanTop > contentBottom && spanBottom > contentBottom) {
+        //下方
         spanArr.push({ name: "down", data: span, idx: spanArr.length });
-      }
-
-      const lapse = 1; //捕捉一下1像素误差
-      if (way == "down") {
-        if (spanArr[spanArr.length - 1].name == "_down") {
-          if (spanBottom - contentBottom < lapse) {
-            // console.log("捕捉误差", span, spanBottom, contentBottom);
-            spanArr[spanArr.length - 1].name = "content";
-          }
-        }
       }
     }
     // console.log(_spanUp, _spanDown, spanContentStart, spanContentEnd);
     // console.log(spanArr);
-    console.assert(
-      spanArr.length == contentDiv.querySelectorAll("span").length,
-      "error数量不对:",
-      [...contentDiv.querySelectorAll("span")].filter((i) => !spanArr.map((i) => i.data).includes(i))
-    );
+    console.assert(spanArr.length == contentDiv.querySelectorAll("span").length);
 
     cleanLine(id);
     let contentSpan = spanArr.filter((i) => i.name == "content");
     let contentRows = getRows(contentSpan);
-    // console.log(contentRows);
     let spanContentStartRow = contentRows[0];
     let spanContentEndRow = contentRows[contentRows.length - 1];
     let spanContentStart = spanContentStartRow[0];
@@ -157,12 +150,15 @@ function App() {
     if (way == "down") {
       contentDiv.scrollTop = contentDiv.scrollTop + (spanContentEnd.data.getBoundingClientRect().top - contentTop);
       spanContentEndRow.forEach((i) => {
-        //给保留一行添加下划线
         let span = i.data;
         span.style.textDecoration = "underline";
         span.style.textDecorationThickness = "0.02em";
         span.style.textDecorationStyle = "solid";
       });
+      if (spanContentEnd.idx == spanArr.length - 2) {
+        //最后一行
+        // console.log(spanContentEnd,);
+      }
     } else {
       contentDiv.scrollTop =
         contentDiv.scrollTop - (contentBottom - spanContentStart.data.getBoundingClientRect().bottom);

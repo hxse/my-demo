@@ -128,11 +128,11 @@ function App() {
         spanArr.push({ name: "down", data: span, idx: spanArr.length });
       }
 
-      const lapse = 1; //捕捉一下1像素误差
-      if (way == "down") {
+      lasp
+      if (way == "down") {//捕捉一下1像素误差
         if (spanArr[spanArr.length - 1].name == "_down") {
-          if (spanBottom - contentBottom < lapse) {
-            // console.log("捕捉误差", span, spanBottom, contentBottom);
+          if (spanBottom - contentBottom < 1) {
+            console.log("捕捉误差", span, spanBottom, contentBottom);
             spanArr[spanArr.length - 1].name = "content";
           }
         }
@@ -157,7 +157,6 @@ function App() {
     if (way == "down") {
       contentDiv.scrollTop = contentDiv.scrollTop + (spanContentEnd.data.getBoundingClientRect().top - contentTop);
       spanContentEndRow.forEach((i) => {
-        //给保留一行添加下划线
         let span = i.data;
         span.style.textDecoration = "underline";
         span.style.textDecorationThickness = "0.02em";

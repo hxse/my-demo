@@ -132,7 +132,7 @@ function App() {
       if (way == "down") {
         if (spanArr[spanArr.length - 1].name == "_down") {
           if (spanBottom - contentBottom < lapse) {
-            // console.log("捕捉误差", span, spanBottom, contentBottom);
+            console.log("捕捉误差", span, spanBottom, contentBottom);
             spanArr[spanArr.length - 1].name = "content";
           }
         }
@@ -157,7 +157,6 @@ function App() {
     if (way == "down") {
       contentDiv.scrollTop = contentDiv.scrollTop + (spanContentEnd.data.getBoundingClientRect().top - contentTop);
       spanContentEndRow.forEach((i) => {
-        //给保留一行添加下划线
         let span = i.data;
         span.style.textDecoration = "underline";
         span.style.textDecorationThickness = "0.02em";

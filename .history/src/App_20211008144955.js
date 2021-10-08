@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { use100vh } from "react-div-100vh";
-import { assert } from "workbox-core/_private";
 
 const keyBinds = [
   [0, "#content1HrDown"], //A
@@ -83,96 +82,50 @@ setInterval(() => {
 
 function App() {
   let [contentHeightState, setContentHeightState] = React.useState();
-  function cleanLine(id) {
-    let contentDiv = document.querySelector(id);
-    for (let span of contentDiv.querySelectorAll("span")) {
-      span.style.textDecoration = "";
-    }
-  }
-  function getRows(spans) {
-    //把span按行分类
-    return spans.reduce(function (pre, current, index) {
-      // console.log(index, span.offsetTop);
-      if (index == 0) {
-        return [[current]];
-      }
-      if (current.data.offsetTop == pre[pre.length - 1][pre[pre.length - 1].length - 1].data.offsetTop) {
-        pre[pre.length - 1].push(current);
-        return pre;
-      } else {
-        return [...pre, [current]];
-      }
-    }, []);
-  }
   function contentPage(id, way) {
-    let spanArr = [];
     let contentDiv = document.querySelector(id);
-    let contentTop = contentDiv.getBoundingClientRect().top;
+    let downTop = contentDiv.scrollTop + contentDiv.clientHeight * 0.85;
+    let upTop = contentDiv.scrollTop - contentDiv.clientHeight * 0.85;
+    contentDiv.scrollTop = way == "down" ? downTop : upTop;
     let contentBottom = contentDiv.getBoundingClientRect().bottom;
+    let contentTop = contentDiv.getBoundingClientRect().top;
+    let difBtm, difTop;
     for (let span of contentDiv.querySelectorAll("span")) {
       let spanTop = span.getBoundingClientRect().top;
-      let spanBottom = span.getBoundingClientRect().bottom;
-      if (spanTop < contentTop && spanBottom < contentTop) {
-        spanArr.push({ name: "up", data: span, idx: spanArr.length });
+      let spanBtm = span.getBoundingClientRect().bottom;
+      if (spanTop < contentTop && spanBtm > contentTop) {
+        difTop = spanTop - contentTop;
       }
-      if (spanTop < contentTop && spanBottom > contentTop) {
-        spanArr.push({ name: "_up", data: span, idx: spanArr.length });
-      }
-      if (spanTop >= contentTop && spanBottom <= contentBottom) {
-        spanArr.push({ name: "content", data: span, idx: spanArr.length });
-      }
-      if (spanTop < contentBottom && spanBottom > contentBottom) {
-        spanArr.push({ name: "_down", data: span, idx: spanArr.length });
-      }
-      if (spanTop > contentBottom && spanBottom > contentBottom) {
-        spanArr.push({ name: "down", data: span, idx: spanArr.length });
-      }
-
-      const lapse = 1; //捕捉一下1像素误差
-      if (way == "down") {
-        if (spanArr[spanArr.length - 1].name == "_down") {
-          if (spanBottom - contentBottom < lapse) {
-            // console.log("捕捉误差", span, spanBottom, contentBottom);
-            spanArr[spanArr.length - 1].name = "content";
-          }
-        }
+      if (spanTop < contentBottom && spanBtm > contentBottom) {
+        difBtm = contentBottom - spanBtm;
       }
     }
-    // console.log(_spanUp, _spanDown, spanContentStart, spanContentEnd);
-    // console.log(spanArr);
-    console.assert(
-      spanArr.length == contentDiv.querySelectorAll("span").length,
-      "error数量不对:",
-      [...contentDiv.querySelectorAll("span")].filter((i) => !spanArr.map((i) => i.data).includes(i))
-    );
 
-    cleanLine(id);
-    let contentSpan = spanArr.filter((i) => i.name == "content");
-    let contentRows = getRows(contentSpan);
-    // console.log(contentRows);
-    let spanContentStartRow = contentRows[0];
-    let spanContentEndRow = contentRows[contentRows.length - 1];
-    let spanContentStart = spanContentStartRow[0];
-    let spanContentEnd = spanContentEndRow[spanContentEndRow.length - 1];
+    difBtm = difBtm ? difBtm : 0;
+    difTop = difTop ? difTop : 0;
     if (way == "down") {
-      contentDiv.scrollTop = contentDiv.scrollTop + (spanContentEnd.data.getBoundingClientRect().top - contentTop);
-      spanContentEndRow.forEach((i) => {
-        //给保留一行添加下划线
-        let span = i.data;
-        span.style.textDecoration = "underline";
-        span.style.textDecorationThickness = "0.02em";
-        span.style.textDecorationStyle = "solid";
-      });
+      console.log("downTop", downTop, contentDiv.scrollHeight, contentDiv.scrollHeight - contentDiv.clientHeight);
+      if (downTop < contentDiv.scrollHeight - contentDiv.clientHeight) {
+        contentDiv.scrollTop = contentDiv.scrollTop + difTop;
+      }
     } else {
-      contentDiv.scrollTop =
-        contentDiv.scrollTop - (contentBottom - spanContentStart.data.getBoundingClientRect().bottom);
-      spanContentStartRow.forEach((i) => {
-        let span = i.data;
-        span.style.textDecoration = "underline";
-        span.style.textDecorationThickness = "0.02em";
-        span.style.textDecorationStyle = "dashed";
-      });
+      if (upTop > 0) {
+        contentDiv.scrollTop = contentDiv.scrollTop - difBtm;
+      }
     }
+
+    for (let span of contentDiv.querySelectorAll("span")) {
+      let spanTop = span.getBoundingClientRect().top;
+      let spanBtm = span.getBoundingClientRect().bottom;
+      if (spanTop >= contentTop && spanBtm <= contentBottom) {
+        span.style.visibility = "visible";
+      } else {
+        span.style.visibility = "hidden";
+      }
+    }
+    let visSpan = [...contentDiv.querySelectorAll("span")].filter((i) => i.style.visibility == "visible");
+    console.log(visSpan);
+
   }
 
   let [translate, setTranslate] = React.useState();
@@ -239,7 +192,6 @@ function App() {
           setRow((i) => {
             setData(result[i]);
             document.querySelector("#content1").scrollTop = 0;
-            cleanLine("#content1");
             return i;
           });
           break;
@@ -248,7 +200,6 @@ function App() {
           setRow2((i) => {
             setData2(result[i]);
             document.querySelector("#content1").scrollTop = 0;
-            cleanLine("#content1");
             return i;
           });
           break;
@@ -294,7 +245,6 @@ function App() {
       setRow(_row);
       setData(file[_row]);
       document.querySelector("#content2").scrollTop = 0;
-      cleanLine("#content2");
       if (_row >= file.length) {
         return "over";
       }
@@ -313,7 +263,6 @@ function App() {
       setRow2(_row2);
       setData2(file2[_row2]);
       document.querySelector("#content1").scrollTop = 0;
-      cleanLine("#content1");
       if (_row2 >= file2.length) {
         return "over";
       }
@@ -381,7 +330,7 @@ function App() {
             <hr id="content1HrUp" className="hr-twill" onClick={contentPage.bind(this, "#content1", "up")} />
             <hr id="content1HrDown" className="hr-twill" onClick={contentPage.bind(this, "#content1", "down")} />
           </div>
-          <div id="content2"> {data ? data.split("").map((i) => <span>{i}</span>) : undefined}</div>
+          <div id="content2">{data}</div>
           <div className="hr-wrapper">
             <hr id="content2HrUp" className="hr-twill" onClick={contentPage.bind(this, "#content2", "up")} />
             <hr id="content2HrDown" className="hr-twill" onClick={contentPage.bind(this, "#content2", "down")} />

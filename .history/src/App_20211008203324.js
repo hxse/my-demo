@@ -132,7 +132,7 @@ function App() {
       if (way == "down") {
         if (spanArr[spanArr.length - 1].name == "_down") {
           if (spanBottom - contentBottom < lapse) {
-            // console.log("捕捉误差", span, spanBottom, contentBottom);
+            console.log("捕捉误差", span, spanBottom, contentBottom);
             spanArr[spanArr.length - 1].name = "content";
           }
         }

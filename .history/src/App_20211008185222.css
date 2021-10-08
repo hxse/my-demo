@@ -16,36 +16,36 @@
 input {
   display: none;
 }
-#content2,
-#content1 {
-  height: 32.5vh;
+#content2, #content1 {
+  height:32.5vh;
   font-size: 2.6rem;
-  overflow-y: scroll;
-  /* text-overflow: ellipsis; */
+  /* line-height: 2.2rem; */
+  overflow: auto;
+  text-overflow:ellipsis;
 }
 #translate {
   text-align: left;
-  height: 15vh;
+  height:15vh;
   font-size: 2rem;
   overflow: auto;
-  text-overflow: ellipsis;
+  text-overflow:ellipsis;
 }
 button {
   width: calc(100vw / 10);
   height: 5vh;
 }
-.hr-wrapper {
+.hr-wrapper{
   display: flex;
   flex-direction: row;
 }
 .hr-twill {
-  width: 50vw;
+  width:50vw;
   border: 0;
   padding: 4px;
   background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 6px);
 }
 .hr-edge-weak-half {
-  width: 50vw;
+  width:50vw;
   border: 0;
   /* padding-top: 3px; */
   padding: 4px;
@@ -56,3 +56,4 @@ button {
   padding-top: 1px;
   background: linear-gradient(to right, transparent, #d0d0d5, transparent);
 }
+span[style]
