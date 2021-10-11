@@ -185,8 +185,7 @@ function App() {
       : null;
   }
   async function mouseEnterEvent(event, text) {
-    let word = event.i.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()…\"“”\?]/g, "");
-    word = word.endsWith("’s") ? word.replace("’s", "") : word;
+    let word = event.i.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()…\"“]/g, "");
 
     let dataArr = [];
     for (let stem of [false, true]) {
